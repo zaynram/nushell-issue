@@ -1,3 +1,5 @@
+# Work with a project's TOML issue files: load, fetch, query, edit, list, and push to the GitHub remote.
+
 alias root-dir = match ($env | compact --empty) {
   {RAMDA_DOC_ROOT_DIR: $d} => { $d | path expand --strict }
   _ => { git rev-parse --show-toplevel | path expand }
