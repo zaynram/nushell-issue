@@ -24,6 +24,7 @@ export def fetch [
   slug?: string@_issue-slugs # The slug for a specific issue to target
   --confirm (-c) # Display the update record(s) and await confirmation to write to disk
 ]: nothing -> oneof<table, nothing> {
+  cd (root-dir)
   if $slug != null { [--search=($slug)] }
   | append '--json=number,title,state,url,createdAt'
   | gh issue list ...$in out+err>|
@@ -169,6 +170,7 @@ export def --wrapped push [
   --existing (-e) # Pass this to update an existing issue instead of creating a new one
   ...rest: string # Additional arguments to pass to `gh issue create`
 ]: nothing -> oneof<nothing, record<index: int, branch: string, url: string>> {
+  cd (root-dir)
   let base: record = main $slug
   let user: string = try { git config --get user.name } catch { '@me' } | str trim
   let desc: string = $base.name
