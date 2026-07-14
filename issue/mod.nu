@@ -210,7 +210,13 @@ export def --wrapped push [
       | output-link
       | wrap url
       | insert branch ($branch | default $slug)
-      | insert index {|row| $row.url | parse '{_}/issues/{index}' | first | into int index }
+      | insert index {|row|
+        $row.url
+        | parse '{_}/issues/{index}'
+        | into record
+        | into int index
+        | get index
+      }
       | wrap reference
     }
 
