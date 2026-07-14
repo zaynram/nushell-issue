@@ -1,0 +1,7 @@
+{
+  name: issue
+  description: "Issue management CLI with GitHub integration support."
+  type: module
+  version: 0.0.1-alpha.1
+  info: {git: `https://github.com/zaynram/nushell-issue.git` ref: main}
+}
