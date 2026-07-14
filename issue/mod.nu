@@ -289,7 +289,7 @@ def build-md []: record<name: string, slug: string, status: string> -> string {
             "#### External\n"
           ]
         }
-        outcome if $issue.vision.outcome.mode? == compound => {
+        outcome if $issue.vision.outcome != singular => {
           $issue.vision.outcome
           | prop-table --property=threads --level=4
           | prepend [
