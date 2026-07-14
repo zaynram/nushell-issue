@@ -289,7 +289,10 @@ def build-md []: record<name: string, slug: string, status: string> -> string {
             "#### External\n"
           ]
         }
-        outcome if $issue.vision.outcome != singular => {
+        outcome if ($issue.vision.outcome | describe) == string => [
+          $"### ($prop | str capitalize)\n**Mode:** ($issue.vision.outcome)\n"
+        ]
+        outcome => {
           $issue.vision.outcome
           | prop-table --property=threads --level=4
           | prepend [
