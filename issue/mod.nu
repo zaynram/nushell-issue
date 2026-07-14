@@ -47,11 +47,9 @@ export def fetch [
       } else {
         get stdout
         | lines
-        | skip 1
+        | last 1
         | str join (char newline)
-        | from tsv --noheaders
-        | drop column
-        | rename branch
+        | parse --regex '\s*(?<branch>.+)\s+(?<url>.+)'
         | into record
         | merge ($row | select index url)
       }
