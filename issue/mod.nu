@@ -171,11 +171,7 @@ export def --wrapped push [
   cd (root-dir)
   let base: record = main $slug
   let user: string = try { git config --get user.name } catch { '@me' } | str trim
-  let desc: string = $base.name
-    | split words
-    | str capitalize
-    | append $"\(($slug))"
-    | str join (char space)
+  let desc: string = $"($base.name) \(($slug))"
   let path: string = $resume | default {
       try {
         let temp: path = try { mktemp --suffix=md } catch {
