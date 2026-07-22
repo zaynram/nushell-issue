@@ -25,7 +25,7 @@ export def fetch [
   --all (-a) # Fetch remote information for all issues
   --confirm (-c) = false # Display the update record(s) and await confirmation to write to disk
 ]: nothing -> oneof<table, nothing> {
-  if $all { issue list | get slug | each {|x| fetch $x --confirm=$confirm } | return }
+  if $all { list | get slug | each {|x| fetch $x --confirm=$confirm } | return }
   if $slug == null { error make --unspanned 'slug is required without `--all`' }
   cd (root-dir)
   gh issue list --search=$slug --json=number,state,url out+err>|
