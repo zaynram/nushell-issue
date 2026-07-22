@@ -21,11 +21,12 @@ export def main [
 
 # Fetch issue(s) from remote and ensure the local TOML is synced.
 export def fetch [
-  slug: string@_issue-slugs # The slug for a specific issue to target
+  slug?: string@_issue-slugs # The slug for a specific issue to target
   --all (-a) # Fetch remote information for all issues
   --confirm (-c) = false # Display the update record(s) and await confirmation to write to disk
 ]: nothing -> oneof<table, nothing> {
   if $all { issue list | get slug | each {|x| fetch $x --confirm=$confirm } | return }
+  if $slug == null { error make --unspanned 'slug is required without `--all`' }
   cd (root-dir)
   gh issue list --search=$slug --json=number,state,url out+err>|
   | complete
