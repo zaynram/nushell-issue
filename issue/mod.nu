@@ -21,13 +21,13 @@ export def main [
 
 # Fetch issue(s) from remote and ensure the local TOML is synced.
 export def fetch [
-  slug?: string@_issue-slugs # The slug for a specific issue to target
-  --confirm (-c) # Display the update record(s) and await confirmation to write to disk
+  slug: string@_issue-slugs # The slug for a specific issue to target
+  --all (-a) # Fetch remote information for all issues
+  --confirm (-c) = false # Display the update record(s) and await confirmation to write to disk
 ]: nothing -> oneof<table, nothing> {
+  if $all { issue list | get slug | each {|x| fetch $x --confirm=$confirm } | return }
   cd (root-dir)
-  if $slug != null { [--search=($slug)] }
-  | append '--json=number,title,state,url,createdAt'
-  | gh issue list ...$in out+err>|
+  gh issue list --search=$slug --json=number,state,url out+err>|
   | complete
   | if $in.exit_code != 0 or ($in.stdout? | is-empty) {
     error make --unspanned 'unable to fetch issues from remote'
@@ -52,7 +52,8 @@ export def fetch [
         | merge ($row | select index url)
       }
       | wrap reference
-      | merge ($row | select status)
+      | insert slug $slug
+      | insert status $row.status
     }
     | collect
     | if $confirm {
