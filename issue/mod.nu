@@ -35,10 +35,8 @@ export def fetch [
     get stdout
     | from json
     | into int number
-    | rename --column={number: index state: status createdAt: date title: slug}
-    | update date { into datetime | format date %Y-%m-%d }
+    | rename --column={number: index state: status}
     | update status { str lowercase } # nu-lint-ignore: nu_parse_error
-    | update slug { parse '{_} ({slug})' | into record | get slug }
     | par-each {|row|
       gh issue develop --list $row.index out+err>|
       | complete
@@ -54,7 +52,7 @@ export def fetch [
         | merge ($row | select index url)
       }
       | wrap reference
-      | merge ($row | select slug date status)
+      | merge ($row | select status)
     }
     | collect
     | if $confirm {
