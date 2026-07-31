@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://zaynram.github.io/ramda-doc/schema/issue.schema.json",
+    "$id": "https://raw.githubusercontent.com/zaynram/nushell-issue/refs/heads/main/schema.json",
     "title": "Problem Awareness - Issue Schema",
     "description": "Vision and value definition for a work item, articulated prior to any decision or implementation work.",
     "oneOf": [
